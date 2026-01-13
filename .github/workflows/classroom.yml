@@ -1,0 +1,111 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Q06_64 Test 1
+      id: q06_64-test-1
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q06_64 Test 1
+        setup-command: javac Q06_64/DecimalToBinary.java
+        command: java -cp Q06_64 DecimalToBinary
+        input: '17'
+        expected-output: The binary equivalent of 17 is 10001
+        comparison-method: contains
+        timeout: 10
+        max-score: 3
+    - name: Q06_64 Test 2
+      id: q06_64-test-2
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q06_64 Test 2
+        setup-command: javac Q06_64/DecimalToBinary.java
+        command: java -cp Q06_64 DecimalToBinary
+        input: '216'
+        expected-output: The binary equivalent of 216 is 11011000
+        comparison-method: contains
+        timeout: 10
+        max-score: 3
+    - name: Q06_66 Test 1
+      id: q06_66-test-1
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q06_66 Test 1
+        setup-command: javac Q06_66/XOR.java
+        command: java -cp Q06_66 XOR
+        input: '1011'
+        expected-output: The result is true
+        comparison-method: contains
+        timeout: 10
+        max-score: 2
+    - name: Q06_66 Test 2
+      id: q06_66-test-2
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q06_66 Test 2
+        setup-command: javac Q06_66/XOR.java
+        command: java -cp Q06_66 XOR
+        input: '10111'
+        expected-output: The result is false
+        comparison-method: contains
+        timeout: 10
+        max-score: 2
+    - name: Q06_67 Test 1
+      id: q06_67-test-1
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q06_67 Test 1
+        setup-command: javac Q06_66/Palindrome.java
+        command: java -cp Q06_66 Palindrome
+        input: palindrome
+        expected-output: palindrome is not a palindrome
+        comparison-method: contains
+        timeout: 10
+        max-score: 2
+    - name: Q06_67 Test 2
+      id: q06_67-test-2
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q06_67 Test 2
+        setup-command: javac Q06_67/Palindrome.java
+        command: java -cp Q06_67 Palindrome
+        input: tacocat
+        expected-output: tacocat is a palindrome
+        comparison-method: contains
+        timeout: 10
+        max-score: 2
+    - name: Q06_67 Test 3
+      id: q06_67-test-3
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Q06_67 Test 3
+        setup-command: javac Q06_67/Palindrome.java
+        command: java -cp Q06_67 Palindrome
+        input: RaCeCar
+        expected-output: RaCeCar is a palindrome
+        comparison-method: contains
+        timeout: 10
+        max-score: 2
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        Q06_64-TEST-1_RESULTS: "${{steps.q06_64-test-1.outputs.result}}"
+        Q06_64-TEST-2_RESULTS: "${{steps.q06_64-test-2.outputs.result}}"
+        Q06_66-TEST-1_RESULTS: "${{steps.q06_66-test-1.outputs.result}}"
+        Q06_66-TEST-2_RESULTS: "${{steps.q06_66-test-2.outputs.result}}"
+        Q06_67-TEST-1_RESULTS: "${{steps.q06_67-test-1.outputs.result}}"
+        Q06_67-TEST-2_RESULTS: "${{steps.q06_67-test-2.outputs.result}}"
+        Q06_67-TEST-3_RESULTS: "${{steps.q06_67-test-3.outputs.result}}"
+      with:
+        runners: q06_64-test-1,q06_64-test-2,q06_66-test-1,q06_66-test-2,q06_67-test-1,q06_67-test-2,q06_67-test-3
