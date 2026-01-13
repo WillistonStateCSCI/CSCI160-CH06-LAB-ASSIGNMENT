@@ -66,8 +66,8 @@ jobs:
       uses: classroom-resources/autograding-io-grader@v1
       with:
         test-name: Q06_67 Test 1
-        setup-command: javac Q06_66/Palindrome.java
-        command: java -cp Q06_66 Palindrome
+        setup-command: javac Q06_67/Palindrome.java
+        command: java -cp Q06_67 Palindrome
         input: palindrome
         expected-output: palindrome is not a palindrome
         comparison-method: contains
